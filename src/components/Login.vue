@@ -1,21 +1,9 @@
 <template>
-<div class="register">
+<div class="login">
     <v-flex xs12>
-      <h1>Register</h1>
+      <h1>Login</h1>
       <div>
-        <v-form ref="form" aria-autocomplete="off">
-          <v-text-field
-            class="label-left"
-            v-model="firstName"
-            label="First name"
-            required
-          ></v-text-field>
-          <v-text-field
-            class="label-left"
-            v-model="lastName"
-            label="Last name"
-            required
-          ></v-text-field>
+        <v-form ref="form">
           <v-text-field
             class="label-left"
             v-model="email"
@@ -33,9 +21,9 @@
           <v-btn
             dark
             class="teal"
-            @click="register"
+            @click="login"
           >
-            Register
+            Login
           </v-btn>
           <v-btn
             dark
@@ -46,7 +34,7 @@
         </v-form>
       </div>
       <br>
-      <div class="error" v-html="error"/>
+      <div class="myerror" v-html="error"/>
     </v-flex>
 </div>
 </template>
@@ -56,19 +44,15 @@ import AuthenticationService from '@/services/AuthenticationService'
 export default {
   data () {
     return {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
       error: null
     }
   },
   methods: {
-    async register () {
+    async login () {
       try {
-        await AuthenticationService.register({
-          firstName: this.firstName,
-          lastName: this.lastName,
+        await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
@@ -77,8 +61,6 @@ export default {
       }
     },
     clear () {
-      this.firstName = ''
-      this.lastName = ''
       this.email = ''
       this.password = ''
     }
@@ -88,11 +70,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.error {
-  font-weight: bold;
-  color: red;
+.myerror {
+  color: red
 }
-.register {
+.login {
   margin-top: 60px;
 }
 </style>
