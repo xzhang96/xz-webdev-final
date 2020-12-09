@@ -5,35 +5,56 @@
       <v-btn
         class="teal"
         @click="navigateTo({name: 'home'})"
-        outlined
+        depressed
         dark>
         RECIPE
       </v-btn>
-    </v-toolbar-items>
-    <!-- <v-toolbar-items>
-      <v-btn flat dark>
-        BROWSE
+
+      <v-btn
+        class="teal"
+        @click="navigateTo({name: 'recipe'})"
+        depressed
+        dark>
+        Browse
       </v-btn>
-    </v-toolbar-items> -->
+    </v-toolbar-items>
     <v-spacer />
     <v-toolbar-items>
       <v-btn
         class="teal"
         @click="navigateTo({name: 'login'})"
-        outlined
-        link
-        text
+        v-if="!$store.state.isUserLoggedIn"
+        depressed
         dark>
         Login
       </v-btn>
+
       <v-btn
         class="teal"
         @click="navigateTo({name: 'register'})"
-        outlined
-        link
-        text
+        v-if="!$store.state.isUserLoggedIn"
+        depressed
         dark>
         Register
+      </v-btn>
+
+      <v-btn
+        class="teal"
+        v-if="$store.state.isUserLoggedIn"
+        depressed
+        dark
+        >
+        My Pantry
+      </v-btn>
+
+      <v-btn
+        class="teal"
+        v-if="$store.state.isUserLoggedIn"
+        depressed
+        dark
+        @click="logout"
+        >
+        Logout
       </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -41,10 +62,18 @@
 </template>
 
 <script>
+// import {mapState} from 'vuex'
 export default {
   methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      this.$router.push({
+        name: 'home'
+      })
     }
   }
 }
