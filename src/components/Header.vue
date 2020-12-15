@@ -44,7 +44,7 @@
         depressed
         dark
         >
-        My Pantry
+        Profile
       </v-btn>
 
       <v-btn

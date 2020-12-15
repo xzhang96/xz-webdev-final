@@ -29,4 +29,8 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.error {
+  font-weight: bold;
+  color: red;
+}
 </style>
