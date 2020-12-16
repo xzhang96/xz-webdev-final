@@ -6,10 +6,13 @@
       cols="3">
   <v-card height="100vh" width="15vw">
     <v-navigation-drawer
+      app
+      absolute
+      :mini-variant="this.$vuetify.breakpoint.mdAndDown"
       permanent>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="title">
+          <v-list-item-title class="title" v-if="this.$vuetify.breakpoint.mdAndUp">
             Hi, {{$store.state.user.firstName}}!
           </v-list-item-title>
         </v-list-item-content>
@@ -67,7 +70,7 @@
               >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    color="primary"
+                    color="teal"
                     dark
                     class="mb-2"
                     v-bind="attrs"
@@ -152,8 +155,8 @@
                   <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                    <v-btn text @click="closeDelete">Cancel</v-btn>
+                    <v-btn text @click="deleteItemConfirm">OK</v-btn>
                     <v-spacer></v-spacer>
                   </v-card-actions>
                 </v-card>
@@ -200,11 +203,12 @@
                       height="150"
                       :src="recipe.image"
                     ></v-img>
-                    <v-card-title>{{recipe.title}}</v-card-title>
+                    <v-card-title
+                      @click="getRecipe(recipe.spoonId)"
+                    >
+                      {{recipe.title}}
+                    </v-card-title>
                     <v-card-text>
-                      <v-row align="center" class="mx-0">
-                        Calories: {{recipe.calories}}
-                      </v-row>
                       <v-row align="center" class="mx-0">
                         Id: {{recipe.spoonId}}
                       </v-row>
@@ -226,8 +230,8 @@
                           <v-card-title class="headline">Are you sure you want to delete this recipe?</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                            <v-btn color="blue darken-1" text @click="unsave">OK</v-btn>
+                            <v-btn text @click="closeDelete">Cancel</v-btn>
+                            <v-btn text @click="unsave">OK</v-btn>
                             <v-spacer></v-spacer>
                           </v-card-actions>
                         </v-card>
@@ -251,7 +255,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              color="primary"
+              color="teal"
               dark
               v-bind="attrs"
               v-on="on"
@@ -300,20 +304,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="dialog = false"
-              >
-                Close
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="updateInfo()"
-              >
-                Save
-              </v-btn>
+              <v-btn text @click="dialog = false">Close</v-btn>
+              <v-btn text @click="updateInfo()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -505,6 +497,12 @@ export default {
       } catch (error) {
         this.recipeError = error.response.data.error
       }
+    },
+    getRecipe (id) {
+      this.$router.push({
+        name: 'recipe',
+        query: {id: id}
+      })
     }
   },
   mounted: async function () {
@@ -545,5 +543,12 @@ h1, h3{
 .empty-pantry {
   margin-right: 0;
   margin-left: 0;
+}
+.v-card__title {
+  text-align: left;
+}
+.v-card__title:hover {
+  cursor: pointer;
+  color: #1e88e5;
 }
 </style>

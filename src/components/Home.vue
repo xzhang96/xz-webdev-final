@@ -122,8 +122,12 @@
             </v-btn>
             <br>
             <br>
+            <br>
+            <br>
           </v-card-actions>
         </v-card>
+        <br>
+        <br>
       </v-tab-item>
 
       <v-tab-item>
@@ -173,6 +177,8 @@
             </v-btn>
             <br>
             <br>
+            <br>
+            <br>
           </v-card-actions>
         </v-card>
       </v-tab-item>
@@ -219,7 +225,8 @@ export default {
         diet: this.dietValue,
         intolerances: this.intoleranceValue.join(),
         addRecipeInformation: true,
-        sort: 'popularity'
+        sort: 'popularity',
+        instructionsRequired: true
       }
       this.$router.push({
         name: 'searchDishResult',
@@ -241,7 +248,10 @@ export default {
       }
       this.$router.push({
         name: 'searchIngredientsResult',
-        query: {ingredients: this.ingredients.join()}
+        query: {
+          ingredients: this.ingredients.join(),
+          ignorePantry: true
+        }
       })
     },
     clearSearchIngredients () {
@@ -271,5 +281,8 @@ export default {
 <style scoped>
 .action {
   padding-left: 40%;
+}
+.v-btn {
+  color: teal
 }
 </style>

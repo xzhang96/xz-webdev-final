@@ -8,18 +8,20 @@
           absolute
           permanent
           left
+          app
+          v-if="this.$vuetify.breakpoint.mdAndUp"
         >
           <v-img :src=recipe.image width="100%">
           </v-img>
           <v-list dense>
             <v-list-item>
               <v-btn
+                v-if="this.$store.state.isUserLoggedIn"
                 fab
                 small
                 block
                 rounded
-                color="teal accent-4"
-                dark
+                color="teal"
                 @click="save"
                 :disabled="saved"
               >
@@ -91,11 +93,11 @@
           <h2>Instructions</h2>
           <v-divider/>
           <br>
-          <v-list>
+          <v-list v-if="this.recipe.analyzedInstructions.length !== 0">
             <template v-for="(step, index) in recipe.analyzedInstructions[0].steps">
               <v-list-item :key="index">
                 <v-list-item-content>
-                <h3 class="instruction-title">{{step.number}}. {{step.step}}</h3>
+                <h3 class="instruction-title" v-html="step.number + `. ` + step.step"></h3>
                 <div class="content">Ingredients:
                   <template v-for="(ingredient, index) in step.ingredients">
                     <v-chip :key="index" outlined color="teal" small>
@@ -157,19 +159,16 @@ export default {
     try {
       const response = await SearchService.getRecipe(this.$route.query.id)
       this.recipe = response.data
-    } catch (error) {
-      this.error = error.response.data.error
-    }
-    try {
-      const saveResponse = await RecipeService.getRecipes()
-      let recipe
-      for (recipe of saveResponse.data) {
-        if (recipe.id === this.recipe.id) {
-          this.saved = true
-          break
+      if (this.$store.state.isUserLoggedIn) {
+        const saveResponse = await RecipeService.getRecipes()
+        let recipe
+        for (recipe of saveResponse.data) {
+          if (recipe.spoonId === this.recipe.id) {
+            this.saved = true
+            break
+          }
         }
       }
-      this.saved = false
     } catch (error) {
       this.error = error.response.data.error
     }

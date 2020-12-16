@@ -6,6 +6,8 @@
         <v-container>
           <router-view />
         </v-container>
+        <br>
+        <br>
       </main>
     </v-app>
   </div>
