@@ -218,7 +218,8 @@ export default {
         includeIngredients: this.pantryValue.join(),
         diet: this.dietValue,
         intolerances: this.intoleranceValue.join(),
-        addRecipeInformation: true
+        addRecipeInformation: true,
+        sort: 'popularity'
       }
       this.$router.push({
         name: 'searchDishResult',

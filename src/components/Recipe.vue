@@ -14,7 +14,6 @@
           <v-list dense>
             <v-list-item>
               <v-btn
-                v-if="!saved"
                 fab
                 small
                 block
