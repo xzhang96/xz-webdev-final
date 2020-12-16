@@ -178,8 +178,66 @@
       </v-sheet>
 
       <v-sheet v-if="this.active === 'My Recipes'">
-        <h1>My Recipes</h1>
+        <h1>My Saved Recipes</h1>
         <v-divider/>
+        <div class="error" v-html="error"/>
+        <v-item-group>
+          <v-container>
+            <v-row>
+              <v-col
+                v-for="recipe in this.recipes"
+                :key="recipe.id"
+                cols="12"
+                md="4"
+              >
+                <v-item>
+                  <v-card
+                    class="elevation-2 mx-auto my-12"
+                    max-width="374"
+                  >
+                    <v-img
+                      height="150"
+                      :src="recipe.image"
+                    ></v-img>
+                    <v-card-title>{{recipe.title}}</v-card-title>
+                    <v-card-text>
+                      <v-row align="center" class="mx-0">
+                        Calories: {{recipe.calories}}
+                      </v-row>
+                      <v-row align="center" class="mx-0">
+                        Id: {{recipe.spoonId}}
+                      </v-row>
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-dialog v-model="dialogDelete" max-width="500px">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            color="blue darken-1"
+                            text
+                            v-bind="attrs"
+                            v-on="on"
+                            @click="deleteRecipe(recipe.id)"
+                          >
+                            <v-icon small class="mr-2">mdi-delete</v-icon>Remove
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-card-title class="headline">Are you sure you want to delete this recipe?</v-card-title>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                            <v-btn color="blue darken-1" text @click="unsave">OK</v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-card-actions>
+                  </v-card>
+                </v-item>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-item-group>
       </v-sheet>
 
       <v-sheet v-if="this.active === 'My Account'">
@@ -299,6 +357,7 @@
 <script>
 import PantryService from '@/services/PantryService'
 import AuthenticationService from '@/services/AuthenticationService'
+import RecipeService from '@/services/RecipeService'
 export default {
   data () {
     return {
@@ -343,7 +402,9 @@ export default {
         lastName: this.$store.state.user.lastName,
         email: this.$store.state.user.email,
         password: null
-      }
+      },
+      recipes: null,
+      deleteRecipeId: null
     }
   },
   methods: {
@@ -429,12 +490,26 @@ export default {
           this.error = error.response.data.error
         }
       }
+    },
+    deleteRecipe (id) {
+      this.deleteRecipeId = id
+      this.dialogDelete = true
+    },
+    async unsave () {
+      try {
+        await RecipeService.removeRecipe(this.deleteRecipeId)
+        window.location.reload()
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   },
   mounted: async function () {
     try {
-      const response = await PantryService.getPantry()
-      this.pantry = response.data
+      const pantry = await PantryService.getPantry()
+      this.pantry = pantry.data
+      const recipes = await RecipeService.getRecipes()
+      this.recipes = recipes.data
     } catch (error) {
       this.error = error.response.data.error
     }

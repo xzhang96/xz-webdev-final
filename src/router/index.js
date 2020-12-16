@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
-import Recipes from '@/components/Recipes'
+import Home from '@/components/Home'
 import Profile from '@/components/Profile'
+import SearchDishResult from '@/components/SearchDishResult'
+import SearchIngredientsResult from '@/components/SearchIngredientsResult'
+import Recipe from '@/components/Recipe'
 
 Vue.use(Router)
 
@@ -13,7 +15,7 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: HelloWorld
+      component: Home
     },
     {
       path: '/register',
@@ -26,14 +28,24 @@ export default new Router({
       component: Login
     },
     {
-      path: '/recipe',
-      name: 'recipe',
-      component: Recipes
-    },
-    {
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/searchDishResult',
+      name: 'searchDishResult',
+      component: SearchDishResult
+    },
+    {
+      path: '/searchIngredientsResult',
+      name: 'searchIngredientsResult',
+      component: SearchIngredientsResult
+    },
+    {
+      path: '/recipe',
+      name: 'recipe',
+      component: Recipe
     }
   ]
 })

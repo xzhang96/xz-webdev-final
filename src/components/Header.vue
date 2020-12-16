@@ -7,22 +7,22 @@
         @click="navigateTo({name: 'home'})"
         depressed
         dark>
-        RECIPE
+        Recipe
       </v-btn>
 
-      <v-btn
+      <!-- <v-btn
         class="teal"
-        @click="navigateTo({name: 'recipe'})"
+        @click="navigateTo({name: 'home'})"
         depressed
         dark>
         Browse
-      </v-btn>
+      </v-btn> -->
     </v-toolbar-items>
     <v-spacer />
     <v-toolbar-items>
       <v-btn
         class="teal"
-        @click="navigateTo({name: 'login'})"
+        :to="{name: 'login'}"
         v-if="!$store.state.isUserLoggedIn"
         depressed
         dark>
@@ -31,7 +31,7 @@
 
       <v-btn
         class="teal"
-        @click="navigateTo({name: 'register'})"
+        :to="{name: 'register'}"
         v-if="!$store.state.isUserLoggedIn"
         depressed
         dark>
@@ -43,6 +43,7 @@
         v-if="$store.state.isUserLoggedIn"
         depressed
         dark
+        :to="{name: 'profile'}"
         >
         Profile
       </v-btn>
@@ -62,7 +63,6 @@
 </template>
 
 <script>
-// import {mapState} from 'vuex'
 export default {
   methods: {
     navigateTo (route) {

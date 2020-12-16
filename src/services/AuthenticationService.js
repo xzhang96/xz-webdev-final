@@ -8,6 +8,6 @@ export default {
     return Api().post('login', credentials)
   },
   editProfile (credentials) {
-    return Api().put('edit_profile', credentials)
+    return Api().put('editProfile', credentials)
   }
 }

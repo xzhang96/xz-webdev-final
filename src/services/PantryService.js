@@ -5,12 +5,12 @@ export default {
     return Api().get(`getPantry`)
   },
   addItemToPantry (params) {
-    return Api().post(`pantry/add_item`, params)
+    return Api().post(`pantry/addItem`, params)
   },
   editItemInPantry (id, params) {
-    return Api().put(`pantry/edit_item/${id}`, params)
+    return Api().put(`pantry/editItem/${id}`, params)
   },
   deleteItemFromPantry (id) {
-    return Api().delete(`pantry/remove_item/${id}`)
+    return Api().delete(`pantry/removeItem/${id}`)
   }
 }
