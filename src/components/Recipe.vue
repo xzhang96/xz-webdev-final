@@ -22,17 +22,7 @@
                 color="teal accent-4"
                 dark
                 @click="save"
-              >
-                <v-icon>mdi-heart-plus</v-icon>&nbsp;
-                <h3>Save</h3>
-              </v-btn>
-              <v-btn
-                v-if="saved"
-                fab
-                small
-                block
-                rounded
-                disabled
+                :disabled="saved"
               >
                 <v-icon>mdi-heart-plus</v-icon>&nbsp;
                 <h3>Save</h3>

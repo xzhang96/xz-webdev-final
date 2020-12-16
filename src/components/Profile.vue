@@ -41,8 +41,9 @@
       <br>
       <v-sheet v-if="this.active === 'My Pantry'">
         <h1>My Pantry</h1>
+        <v-divider/>
         <br/>
-        <div class="error" v-html="error"/>
+        <v-alert dense outlined type="error" v-if="pantryError !== null">{{pantryError}}</v-alert>
         <v-data-table
           v-if="pantry !== null"
           :headers="headers"
@@ -180,7 +181,7 @@
       <v-sheet v-if="this.active === 'My Recipes'">
         <h1>My Saved Recipes</h1>
         <v-divider/>
-        <div class="error" v-html="error"/>
+        <v-alert dense outlined type="error" v-if="recipeError !== null">{{recipeError}}</v-alert>
         <v-item-group>
           <v-container>
             <v-row>
@@ -318,7 +319,7 @@
         </v-dialog>
         </v-row>
         <br/>
-        <div class="error" v-html="error"/>
+        <v-alert dense outlined type="error" v-if="accountError !== null">{{accountError}}</v-alert>
         <v-card width="70%">
           <v-card-text>
             <v-row>
@@ -367,7 +368,9 @@ export default {
         { title: 'My Account', icon: 'mdi-account' }
       ],
       active: 'My Pantry',
-      error: null,
+      pantryError: null,
+      recipeError: null,
+      accountError: null,
       pantry: null,
       search: '',
       dialog: false,
@@ -426,7 +429,7 @@ export default {
         await PantryService.deleteItemFromPantry(this.editedItem.id)
         window.location.reload()
       } catch (error) {
-        this.error = error.response.data.error
+        this.pantryError = error.response.data.error
       }
     },
     close () {
@@ -455,7 +458,7 @@ export default {
           })
           window.location.reload()
         } catch (error) {
-          this.error = error.response.data.error
+          this.pantryError = error.response.data.error
         }
       } else {
         try {
@@ -468,7 +471,7 @@ export default {
           })
           window.location.reload()
         } catch (error) {
-          this.error = error.response.data.error
+          this.pantryError = error.response.data.error
         }
       }
     },
@@ -487,7 +490,7 @@ export default {
           this.$store.dispatch('setUser', response.data.user)
           this.close()
         } catch (error) {
-          this.error = error.response.data.error
+          this.accountError = error.response.data.error
         }
       }
     },
@@ -500,7 +503,7 @@ export default {
         await RecipeService.removeRecipe(this.deleteRecipeId)
         window.location.reload()
       } catch (error) {
-        this.error = error.response.data.error
+        this.recipeError = error.response.data.error
       }
     }
   },
@@ -511,7 +514,7 @@ export default {
       const recipes = await RecipeService.getRecipes()
       this.recipes = recipes.data
     } catch (error) {
-      this.error = error.response.data.error
+      this.pantryError = error.response.data.error
     }
   },
   computed: {
@@ -538,5 +541,9 @@ h1, h3{
 }
 .pantry {
   padding: 25px;
+}
+.empty-pantry {
+  margin-right: 0;
+  margin-left: 0;
 }
 </style>

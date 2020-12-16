@@ -75,14 +75,14 @@
                 </v-col>
                 <v-col>
                   <v-select
-                    v-if="$store.state.isUserLoggedIn === true"
                     v-model="pantryValue"
                     :items="pantryItems"
                     chips
-                    label="Include Items From Pantry"
+                    label="Items From Pantry (Only for logged in users)"
                     multiple
                     outlined
                     attach
+                    :disabled="$store.state.isUserLoggedIn === false"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -252,13 +252,15 @@ export default {
     }
   },
   mounted: async function () {
-    try {
-      const response = await PantryService.getPantry()
-      response.data.map(item => {
-        this.pantryItems.push(item.name)
-      })
-    } catch (error) {
-      this.error = error.response.data.error
+    if (this.$store.state.isUserLoggedIn) {
+      try {
+        const response = await PantryService.getPantry()
+        response.data.map(item => {
+          this.pantryItems.push(item.name)
+        })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   }
 }
