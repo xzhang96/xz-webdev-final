@@ -46,7 +46,7 @@
         </v-form>
       </div>
       <br>
-      <div class="error" v-html="error"/>
+      <v-alert dense outlined type="error" v-if="error !== null">{{error}}</v-alert>
     </v-flex>
 </div>
 </template>
